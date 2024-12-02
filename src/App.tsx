@@ -1,10 +1,9 @@
 import { WeatherCard } from "./components/WeatherCard";
 
-
 const App = () => {
   return (
     <div>
-     <WeatherCard/>
+      <WeatherCard />
     </div>
   );
 };
