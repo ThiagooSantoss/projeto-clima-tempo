@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { getLocalizacao } from "../utils/getLocalizacao";
+
 import { Clima } from "./types/clima";
+import { getClimaFuturo } from "../utils/getClimaFuturo";
+import { Previsao14Dias } from "./Previsao14Dias";
 
 export const WeatherCard = () => {
   const [localizacao, setLocalizacao] = useState("");
   const [clima, setClima] = useState<Clima | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  
 
   const buscarClima = async () => {
     if (!localizacao.trim()) {
@@ -19,7 +19,7 @@ export const WeatherCard = () => {
     setClima(null);
 
     try {
-      const dados = await getLocalizacao(localizacao);
+      const dados = await getClimaFuturo(localizacao);
       setClima(dados);
     } catch (err) {
       setError("Erro ao buscar o clima.");
@@ -30,7 +30,7 @@ export const WeatherCard = () => {
   useEffect(() => {
     const fetchClima = async () => {
       try {
-        const dados = await getLocalizacao("São Paulo");
+        const dados = await getClimaFuturo();
         setClima(dados);
       } catch (err) {
         setError("Erro ao buscar o clima.");
@@ -75,24 +75,38 @@ export const WeatherCard = () => {
   );
 };
 
-const ClimaAtual = ({ clima }: { clima: Clima }) => (
-  <div className="mt-6">
-    <h2 className="text-xl font-semibold mb-2 text-gray-800">Clima Atual</h2>
-    <p className="text-gray-700">
-      <strong className="font-medium">Cidade:</strong> {clima.location.region}
-    </p>
-    <p className="text-gray-700">
-      <strong className="font-medium">Temperatura:</strong>{" "}
-      {clima.current.temp_c}°C
-    </p>
-    <p className="text-gray-700">
-      <strong className="font-medium">Condição:</strong>{" "}
-      {clima.current.condition.text}
-    </p>
-    <img
-      src={clima.current.condition.icon}
-      alt="Condição do tempo"
-      className="mt-4"
-    />
-  </div>
-);
+const ClimaAtual = ({ clima }: { clima: Clima }) => {
+
+const primeiroElemento = clima.forecast.forecastday.shift()
+ 
+  return (
+    <>
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold mb-2 text-gray-800">
+          Clima Atual
+        </h2>
+        <p className="text-gray-700">
+          <strong className="font-medium">Cidade:</strong>{" "}
+          {clima.location.region}
+        </p>
+        <p className="text-gray-700">
+          <strong className="font-medium">Temperatura:</strong>{" "}
+          {clima.current.temp_c}°C
+        </p>
+        <p className="text-gray-700">
+          <strong className="font-medium">Condição:</strong>{" "}
+          {clima.current.condition.text}
+        </p>
+        <img
+          src={clima.current.condition.icon}
+          alt="Condição do tempo"
+          className="mt-4"
+        />
+      </div>
+
+      {clima.forecast && (
+        <Previsao14Dias forecast={clima.forecast.forecastday} />
+      )}
+    </>
+  );
+};
