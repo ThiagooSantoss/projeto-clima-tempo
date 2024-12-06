@@ -86,27 +86,50 @@ export const WeatherCard = () => {
 };
 
 const ClimaAtual = ({ clima }: { clima: Clima }) => {
-  const diasPrevisao = clima.forecast.forecastday.slice(1);
+  const hoje = new Date(clima.forecast.forecastday[0].date)
+    .toISOString()
+    .split("T")[0];
+
+  const diasPrevisao = clima.forecast.forecastday.filter(
+    (day) => day.date !== hoje
+  );
 
   return (
     <div className="mt-6">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Clima Atual</h2>
-      <div className="flex items-center gap-4 mb-6">
+      <h2 className="text-center text-xl font-semibold text-gray-800 mb-4">
+        Clima de Hoje
+      </h2>
+      <div className="flex items-center gap-4 mb-6 bg-white rounded-lg shadow-lg p-4 border border-gray-200">
         <img
           src={clima.current.condition.icon}
           alt="Condição do tempo"
-          className="w-16 h-16"
+          className="w-20 h-20"
         />
         <div>
           <p className="text-gray-700">
             <strong>Cidade:</strong> {clima.location.region}
           </p>
           <p className="text-gray-700">
-            <strong>Temperatura:</strong> {Math.round(clima.current.temp_c)}°C
+            <strong>Temperatura Atual:</strong>{" "}
+            {Math.round(clima.current.temp_c)}°C
           </p>
           <p className="text-gray-700">
             <strong>Condição:</strong> {clima.current.condition.text}
           </p>
+          <div className="flex justify-between mt-2 text-sm text-gray-600">
+            <p>
+              <strong>Máx:</strong>{" "}
+              <span className="font-bold text-red-500">
+                {Math.round(clima.forecast.forecastday[0].day.maxtemp_c)}°C
+              </span>
+            </p>
+            <p>
+              <strong>Mín:</strong>{" "}
+              <span className="font-bold text-blue-500">
+                {Math.round(clima.forecast.forecastday[0].day.mintemp_c)}°C
+              </span>
+            </p>
+          </div>
         </div>
       </div>
 
