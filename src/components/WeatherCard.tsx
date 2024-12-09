@@ -1,17 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import { Clima } from "./types/clima";
+import { useEffect, useState } from "react";
+import { Clima, ForecastDay } from "./types/clima";
 import { getClimaFuturo } from "../utils/getClimaFuturo";
 import { Previsao14Dias } from "./Previsao14Dias";
 
 export const WeatherCard = () => {
   const [localizacao, setLocalizacao] = useState("");
-  const [clima, setClima] = useState<Clima | null>(null);
+  const [clima, setClima] = useState<ForecastDay[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const hasFetchedData = useRef(false);
+
+  const removePrimeiroElemento = (arr:ForecastDay[]) => {
+    const meuArray = arr;
+    const primeiroElemento = meuArray.shift();
+
+    console.log(primeiroElemento); // Saída: 1
+    console.log(meuArray); // Saída: [2, 3, 4]
+
+    return meuArray;
+  };
 
   const buscarClima = async (local?: string) => {
     setError(null);
-    setClima(null);
+    setClima([]);
 
     try {
       const dados = await getClimaFuturo(local);
@@ -23,13 +32,11 @@ export const WeatherCard = () => {
   };
 
   useEffect(() => {
-    if (hasFetchedData.current) return;
-    hasFetchedData.current = true;
-
     const fetchClima = async () => {
       try {
         const dados = await getClimaFuturo();
-        setClima(dados);
+
+        setClima(removePrimeiroElemento(dados));
       } catch (err) {
         setError("Erro ao buscar o clima.");
         console.error(err);
@@ -86,14 +93,6 @@ export const WeatherCard = () => {
 };
 
 const ClimaAtual = ({ clima }: { clima: Clima }) => {
-  const hoje = new Date(clima.forecast.forecastday[0].date)
-    .toISOString()
-    .split("T")[0];
-
-  const diasPrevisao = clima.forecast.forecastday.filter(
-    (day) => day.date !== hoje
-  );
-
   return (
     <div className="mt-6">
       <h2 className="text-center text-xl font-semibold text-gray-800 mb-4">
@@ -133,7 +132,7 @@ const ClimaAtual = ({ clima }: { clima: Clima }) => {
         </div>
       </div>
 
-      {diasPrevisao.length > 0 && <Previsao14Dias forecast={diasPrevisao} />}
+      <Previsao14Dias forecast={clima.forecast.forecastday} />
     </div>
   );
 };
