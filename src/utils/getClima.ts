@@ -24,7 +24,7 @@ const getLocationFromBrowser = async (): Promise<string> => {
   }
 };
 
-export const getClimaFuturo = async (localizacao?: string): Promise<Clima> => {
+export const getClima = async (localizacao?: string): Promise<Clima> => {
   const key = import.meta.env.VITE_API_KEY;
 
   let localizacaoBrowser = "";
@@ -40,15 +40,14 @@ export const getClimaFuturo = async (localizacao?: string): Promise<Clima> => {
     },
   };
 
-  const res = await fetch(
+  const res: Response = await fetch(
     `${baseURL}/forecast.json?key=${key}&q=${
       localizacao || localizacaoBrowser
-    }&lang=pt&days=14`,
+    }&lang=pt&days=13`,
     options
   );
 
-  const resJson = await res.json();
-  console.log(resJson);
+  const resJson: Clima = await res.json();
 
   return resJson;
 };

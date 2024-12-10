@@ -6,14 +6,13 @@ interface Props {
 }
 
 export const Previsao14Dias: React.FC<Props> = ({ forecast }) => {
-  
   return (
-    <div className="p-6">
+    <div className="py-6">
       <h2 className="text-2xl font-bold mb-6 text-center text-black">
-        Previsão para os próximos 14 dias
+        Previsão para os próximos 12 dias
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-        {meuArray.map((day, index) => (
+        {forecast.map((day, index) => (
           <div
             key={index}
             className="bg-gradient-to-br from-blue-300 via-purple-300 to-blue-100 rounded-lg shadow-lg p-4 text-center border border-gray-300"

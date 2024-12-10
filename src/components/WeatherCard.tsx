@@ -1,29 +1,20 @@
 import { useEffect, useState } from "react";
-import { Clima, ForecastDay } from "./types/clima";
-import { getClimaFuturo } from "../utils/getClimaFuturo";
+import { Clima } from "./types/clima";
+import { getClima } from "../utils/getClima";
 import { Previsao14Dias } from "./Previsao14Dias";
 
 export const WeatherCard = () => {
   const [localizacao, setLocalizacao] = useState("");
-  const [clima, setClima] = useState<ForecastDay[]>([]);
+  const [clima, setClima] = useState<Clima | null>(null);
+
   const [error, setError] = useState<string | null>(null);
-
-  const removePrimeiroElemento = (arr:ForecastDay[]) => {
-    const meuArray = arr;
-    const primeiroElemento = meuArray.shift();
-
-    console.log(primeiroElemento); // Saída: 1
-    console.log(meuArray); // Saída: [2, 3, 4]
-
-    return meuArray;
-  };
 
   const buscarClima = async (local?: string) => {
     setError(null);
-    setClima([]);
+    setClima(null);
 
     try {
-      const dados = await getClimaFuturo(local);
+      const dados = await getClima(local);
       setClima(dados);
     } catch (err) {
       setError("Erro ao buscar o clima.");
@@ -34,9 +25,9 @@ export const WeatherCard = () => {
   useEffect(() => {
     const fetchClima = async () => {
       try {
-        const dados = await getClimaFuturo();
+        const dados = await getClima();
 
-        setClima(removePrimeiroElemento(dados));
+        setClima(dados);
       } catch (err) {
         setError("Erro ao buscar o clima.");
         console.error(err);
@@ -64,7 +55,7 @@ export const WeatherCard = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 to-indigo-600 p-4">
-      <div className="max-w-lg w-full bg-white shadow-2xl rounded-lg overflow-hidden">
+      <div className="max-w-2xl w-full bg-white shadow-2xl rounded-lg overflow-hidden">
         <div className="p-6">
           <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
             Previsão do Tempo
@@ -132,7 +123,7 @@ const ClimaAtual = ({ clima }: { clima: Clima }) => {
         </div>
       </div>
 
-      <Previsao14Dias forecast={clima.forecast.forecastday} />
+      <Previsao14Dias forecast={clima.forecast.forecastday.slice(1)} />
     </div>
   );
 };
