@@ -49,5 +49,7 @@ export const getClima = async (localizacao?: string): Promise<Clima> => {
 
   const resJson: Clima = await res.json();
 
+  console.log("Dias retornados:", resJson.forecast.forecastday.length);
+
   return resJson;
 };

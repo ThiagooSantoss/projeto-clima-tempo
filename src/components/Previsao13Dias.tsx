@@ -1,21 +1,21 @@
 import React from "react";
-import { ForecastDay } from "../components/types/clima";
+import { ForecastDay } from "./types/clima";
 
 interface Props {
   forecast: ForecastDay[];
 }
 
-export const Previsao14Dias: React.FC<Props> = ({ forecast }) => {
+export const Previsao13Dias: React.FC<Props> = ({ forecast }) => {
   return (
-    <div className="py-6">
+    <div className="p-6">
       <h2 className="text-2xl font-bold mb-6 text-center text-black">
-        Previsão para os próximos 12 dias
+        Previsão para os próximos 13 dias
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
         {forecast.map((day, index) => (
           <div
             key={index}
-            className="bg-gradient-to-br from-blue-300 via-purple-300 to-blue-100 rounded-lg shadow-lg p-4 text-center border border-gray-300"
+            className="rounded-lg shadow-lg p-4 text-center border border-gray-300"
           >
             {/* Formata a data para pt-BR */}
             <h3 className="text-lg font-semibold mb-2">
