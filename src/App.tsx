@@ -2,10 +2,17 @@ import { WeatherCard } from "./components/WeatherCard";
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-400 via-indigo-500 to-purple-600">
+    <div className="bg-cover bg-center bg-repeat min-h-screen bg-blue-500 "
+    style={{
+      backgroundImage: `url('/weather-background-blue3.png')`,
+      backgroundSize: "450px 450px",
+    }}
+    >
       <WeatherCard />
     </div>
   );
 };
 
 export default App;
+  
+

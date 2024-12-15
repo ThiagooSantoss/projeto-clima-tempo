@@ -68,27 +68,36 @@ export const WeatherCard = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-400 via-indigo-500 to-purple-600">
-      <div className="max-w-2xl w-full bg-gradient-to-br from-white via-indigo-100 to-purple-200 shadow-2xl rounded-lg overflow-hidden">
-        <div className="p-6">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="max-w-2xl w-full">
+        <div className="p-6 my-2 rounded bg-gray-100">
           <h1 className="text-3xl font-bold text-center text-indigo-800 mb-6">
             Previsão do Tempo
           </h1>
 
-          <div className="relative">
+          <div className="flex items-center px-3 py-1  mb-4 border border-indigo-300 rounded-lg  focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white w-full relative">
             <input
               type="text"
               value={localizacao}
               onChange={(e) => setLocalizacao(e.target.value)}
               placeholder="Digite uma cidade"
-              className="w-full p-3 pl-10 border border-indigo-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full  border-0 bg-transparent "
             />
-            <span className="absolute left-3 top-3 text-gray-400">🔍</span>
+            <span className=" text-gray-400">
+              <svg
+                width="20"
+                height="20"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+              >
+                <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+              </svg>
+            </span>
           </div>
 
           <button
             onClick={() => buscarClima(localizacao)}
-            className="w-full p-3 bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 text-white font-semibold rounded-lg hover:opacity-90 transition duration-300"
+            className="w-full p-3 bg-gradient-to-r  from-blue-500 via-purple-600 to-pink-500 text-white font-semibold rounded-lg hover:opacity-90 transition duration-300"
           >
             Buscar
           </button>
@@ -106,7 +115,7 @@ const ClimaAtual = ({ clima }: { clima: Clima }) => {
       <h2 className="text-center text-xl font-semibold text-indigo-800 mb-4">
         Clima de Hoje
       </h2>
-      <div className="flex items-center gap-4 mb-6 bg-white rounded-lg shadow-lg p-4 border border-indigo-200">
+      <div className="flex justify-center mx-6 items-center gap-4 mb-6 bg-white rounded-lg shadow-lg p-4 border border-indigo-200">
         <img
           src={clima.current.condition.icon}
           alt="Condição do tempo"

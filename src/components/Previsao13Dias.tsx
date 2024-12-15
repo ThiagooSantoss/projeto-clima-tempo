@@ -7,7 +7,7 @@ interface Props {
 
 export const Previsao13Dias: React.FC<Props> = ({ forecast }) => {
   return (
-    <div className="p-6">
+    <div className="py-6">
       <h2 className="text-2xl font-bold mb-6 text-center text-black">
         Previsão para os próximos 13 dias
       </h2>
